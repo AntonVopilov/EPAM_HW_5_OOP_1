@@ -17,15 +17,14 @@ import functools
 
 
 def original_func(func):
-    original_name = func.__name__
-    original_doc = func.__doc__
-    original_func = func
+    original_decorated_function = func
 
     def decorator(func):
+        @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            wrapper.__name__ = original_name
-            wrapper.__doc__ = original_doc
-            wrapper.__original_func = original_func
+            wrapper.__name__ = original_decorated_function.__name__
+            wrapper.__doc__ = original_decorated_function.__doc__
+            wrapper.__original_func = original_decorated_function
             return func(*args, **kwargs)
 
         return wrapper
@@ -58,6 +57,8 @@ if __name__ == '__main__':
     print(custom_sum.__name__)
 
     without_print = custom_sum.__original_func
+    print(without_print)
+    print(custom_sum)
 
     # the result returns without printing
     without_print(1, 2, 3, 4)
