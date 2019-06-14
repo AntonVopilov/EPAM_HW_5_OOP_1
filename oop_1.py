@@ -44,10 +44,7 @@ class Homework:
         self.deadline = timedelta(days=deadline_days, hours=0, seconds=0)
 
     def is_active(self):
-        if self.created + self.deadline > datetime.today():
-            return True
-        else:
-            return False
+        return self.created + self.deadline > datetime.today()
 
 
 class Student:
@@ -57,12 +54,7 @@ class Student:
         self.first_name = first_name
 
     def do_homework(self, hw):
-        # тоже ведь не использует объект в теле функции, значит может быть staticmethod?
-        if hw.is_active():
-            return hw
-        else:
-            print('You are late')
-            return None
+        return hw if hw.is_active() else print('You are late')
 
 
 class Teacher:
@@ -76,11 +68,10 @@ class Teacher:
         return Homework(text, deadline_days)
 
 
-
 if __name__ == '__main__':
     teacher = Teacher('Daniil', 'Shadrin')
     student = Student('Roman', 'Petrov')
-    print(teacher.last_name) # Daniil
+    print(teacher.last_name)  # Daniil
     print(student.first_name)  # Petrov
 
     expired_homework = teacher.create_homework('Learn functions', 0)
@@ -92,4 +83,4 @@ if __name__ == '__main__':
     create_homework_too = teacher.create_homework
     oop_homework = create_homework_too('create 2 simple classes', 5)
     print(oop_homework.deadline)  # 5 days, 0:00:00
-    print(student.do_homework(expired_homework) ) # You are late
+    print(student.do_homework(expired_homework))  # You are late
